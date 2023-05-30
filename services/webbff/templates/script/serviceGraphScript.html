@@ -1,0 +1,187 @@
+<script>
+    new MultiSelectTag('services', {
+        rounded: true,    // default true
+        shadow: true      // default false
+    })
+
+</script>
+
+<script src="/public/js/core/popper.min.js"></script>
+<script src="/public/js/core/bootstrap.min.js"></script>
+<script src="/public/js/plugins/perfect-scrollbar.min.js"></script>
+<script src="/public/js/plugins/smooth-scrollbar.min.js"></script>
+<script src="/public/js/plugins/chartjs.min.js"></script>
+
+<script>
+    function getHTMLServiceGraph() {
+        const year = new Date().getFullYear();
+        var lastyear = new Date().getFullYear() - 1;
+        const h6Elements = document.querySelectorAll('.keys');
+        const data = new Map();
+
+        h6Elements.forEach(function (h6Element) {
+            const serviceName = h6Element.getAttribute('keys');
+            const serviceData = [];
+
+            const valueElements = Array.from(h6Element.nextElementSibling.querySelectorAll('.value'));
+
+            valueElements.forEach(function (valueElement) {
+                const time = valueElement.getAttribute('data-time');
+                const cost = valueElement.getAttribute('data-cost');
+
+                let formattedTime = null;
+                if (time.includes(`${year}-`)) {
+                    formattedTime = time.split(`${year}-`)[1];
+                } else if (time.includes(`${lastyear}-`)) {
+                    formattedTime = time.split(`${lastyear}-`)[1];
+                }
+
+                serviceData.push({
+                    time: formattedTime,
+                    cost: cost
+                });
+            });
+
+            data.set(serviceName, serviceData);
+        });
+
+        return data;
+    }
+
+    function getRandomColor() {
+        const red = Math.floor(Math.random() * 156) + 100;
+        const green = Math.floor(Math.random() * 156) + 100;
+        const blue = Math.floor(Math.random() * 156) + 100;
+
+        const color = `rgb(${red}, ${green}, ${blue},0.7)`;
+
+        return color;
+    }
+
+    function randomLightColor() {
+        const red = Math.floor(Math.random() * 156) + 100;
+        const green = Math.floor(Math.random() * 156) + 100;
+        const blue = Math.floor(Math.random() * 156) + 100;
+
+        const color = `rgb(${red}, ${green}, ${blue})`;
+
+        return color;
+    }
+
+    const serviceData = getHTMLServiceGraph();
+    var ctx = document.getElementById("chart-bars").getContext("2d");
+
+    const datasets = [];
+    const labels = [];
+    for (const [serviceName, serviceDataArray] of serviceData.entries()) {
+        serviceDataArray.sort((a, b) => a.time - b.time);
+        const dataSet = {
+            label: serviceName,
+            tension: 0.4,
+            borderWidth: 0,
+            borderRadius: 4,
+            borderSkipped: false,
+            backgroundColor: randomLightColor(),
+            data: serviceDataArray.map(({ time, cost }) => cost),
+            maxBarThickness: 8
+        };
+        datasets.push(dataSet);
+        if (labels.length === 0) {
+            labels.push(...serviceDataArray.map(({ time }) => time));
+        }
+    }
+
+    new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: labels,
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true
+                },
+                datalabels: {
+                    anchor: 'end',
+                    align: 'top',
+                    color: '#fff',
+                    font: {
+                        size: 14,
+                        weight: 'bold'
+                    },
+                    formatter: function (value, context) {
+                        return value;
+                    }
+                },
+            },
+            interaction: {
+                intersect: false,
+                mode: "index"
+            },
+
+        }
+    });
+
+    const datasetsLineCharts = [];
+    const labelsLineCharts = [];
+    for (const [serviceName, serviceDataArray] of serviceData.entries()) {
+        serviceDataArray.sort((a, b) => a.time - b.time);
+        const dataSet = {
+            label: serviceName,
+            tension: 0.4,
+            borderWidth: 0,
+            borderRadius: 4,
+            borderSkipped: false,
+            backgroundColor: getRandomColor(),
+            data: serviceDataArray.map(({ time, cost }) => cost),
+            pointRadius: 0,
+            fill: true,
+            borderWidth: 3
+        };
+        datasetsLineCharts.push(dataSet);
+        if (labelsLineCharts.length === 0) {
+            labelsLineCharts.push(...serviceDataArray.map(({ time }) => time));
+        }
+    }
+
+    const ctx2 = document.getElementById("chart-line").getContext("2d");
+
+    new Chart(ctx2, {
+        type: "line",
+        data: {
+            labels: labelsLineCharts,
+            datasets: datasetsLineCharts,
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                },
+                datalabels: {
+                    display: false,
+                },
+            },
+            interaction: {
+                intersect: false,
+                mode: "index",
+            },
+
+        },
+    });
+
+
+</script>
+<script>
+    function setActive(element) {
+        const options = document.querySelectorAll(".dropdown-item");
+        options.forEach(option => option.classList.remove("active"));
+
+        element.classList.add("active");
+    }
+
+</script>

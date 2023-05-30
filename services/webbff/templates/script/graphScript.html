@@ -1,0 +1,271 @@
+<script src="/public/js/core/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
+    integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
+    integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha"
+    crossorigin="anonymous"></script>
+<script src="/public/js/dashboard.js"></script>
+
+<script>
+function getHtmlData() {
+  var year = new Date().getFullYear();
+  var lastyear = new Date().getFullYear() - 1;
+  let h5 = document.getElementById("graphValues");
+  let mongoVal = document.getElementById("mongoGraphValues");
+
+  let response = h5.textContent;
+  let resp = mongoVal.textContent;
+
+
+  let text = response.split("date")
+  let time = []
+  for (i = 0; i < text.length; i++) {
+    time.push(text[i].split("cost"))
+  }
+
+  let mongoText = resp.split("date")
+  let mongoTime = []
+  for (j = 0; j < mongoText.length; j++) {
+    mongoTime.push(mongoText[j].split("cost"))
+  }
+
+  labels = [];
+  awsValues = [];
+  mongodbValues = [];
+  for (i = 0; i < time.length - 1; i++) {
+    if (time[i].length >= 1) {
+      var a = time[i][1].split(" ");
+      var temp;
+      if (a[0].includes(year)) {
+        temp = a[0].split(year + "-");
+      } else if (a[0].includes(lastyear)) {
+        temp = a[0].split(lastyear + "-");
+      } else {
+        continue;
+      }
+      if (temp.length >= 2) {
+        labels.push(temp[1]);
+        awsValues.push(time[i][0]);
+        // mongodbValues.push(time[i][0]); // Assuming MongoDB data is also available
+      }
+    }
+  }
+  for (m = 0; m < mongoTime.length - 1; m++) {
+    if (mongoTime[m].length >= 1) {
+      var a = mongoTime[m][1].split(" ");
+      var temp;
+      if (a[0].includes(year)) {
+        temp = a[0].split(year + "-");
+      } else if (a[0].includes(lastyear)) {
+        temp = a[0].split(lastyear + "-");
+      } else {
+        continue;
+      }
+      if (temp.length >= 2) {
+        // labels.push(temp[1]);
+        mongodbValues.push(mongoTime[m][0]); // MongoDB data pushed
+      }
+    }
+  }
+}
+
+getHtmlData();
+
+var ctx = document.getElementById("chart-bars").getContext("2d");
+new Chart(ctx, {
+  type: "bar",
+  data: {
+    text: "Date",
+    labels: labels,
+    datasets: [
+      {
+        label: "AWS",
+        tension: 0.4,
+        borderWidth: 0,
+        borderRadius: 4,
+        borderSkipped: false,
+        backgroundColor: "#FF9900",
+        data: awsValues,
+        maxBarThickness: 6,
+        text: "Costs (MicroDollars)",
+      },
+      {
+        label: "MongoDB",
+        tension: 0.4,
+        borderWidth: 0,
+        borderRadius: 4,
+        borderSkipped: false,
+        backgroundColor: "#4DB33D",
+        data: mongodbValues,
+        maxBarThickness: 6,
+        text: "Costs (MicroDollars)",
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            var label = context.dataset.label || "";
+            if (label) {
+              label += ": ";
+            }
+            if (context.parsed.y !== null) {
+              label += context.parsed.y + " MicroDollars";
+            }
+            return label;
+          },
+        },
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: "Cost in Dollars ($)",
+          font: {
+            weight: "bold",
+            color: "white", // Change the color to white
+          },
+        },
+      },
+      x: {
+        title: {
+          display: true,
+          text: "Date",
+          font: {
+            weight: "bold",
+            color: "white", // Change the color to white
+          },
+        },
+      },
+    },
+    interaction: {
+      intersect: false,
+      mode: "index",
+    },
+  },
+});
+
+
+var ctx2 = document.getElementById("chart-line").getContext("2d");
+
+var gradientStroke1 = ctx2.createLinearGradient(0, 230, 0, 50);
+gradientStroke1.addColorStop(1, "rgba(203,12,159,0.2)");
+gradientStroke1.addColorStop(0.2, "rgba(72,72,176,0.0)");
+gradientStroke1.addColorStop(0, "rgba(203,12,159,0)"); //purple colors
+
+var gradientStroke2 = ctx2.createLinearGradient(0, 230, 0, 50);
+gradientStroke2.addColorStop(1, "rgba(20,23,39,0.2)");
+gradientStroke2.addColorStop(0.2, "rgba(72,72,176,0.0)");
+gradientStroke2.addColorStop(0, "rgba(20,23,39,0)"); //purple colors
+
+new Chart(ctx2, {
+    type: "line",
+    data: {
+        labels: labels,
+        datasets: [
+            {
+                label: "AWS",
+                tension: 0.4,
+                borderWidth: 3,
+                pointRadius: 0,
+                borderColor: "#FF9900",
+                backgroundColor: gradientStroke1,
+                fill: true,
+                data: awsValues,
+                maxBarThickness: 6,
+            },
+            {
+                label: "MongoDB",
+                tension: 0.4,
+                borderWidth: 3,
+                pointRadius: 0,
+                borderColor: "#4DB33D",
+                backgroundColor: gradientStroke2,
+                fill: true,
+                data: mongodbValues,
+                maxBarThickness: 6,
+            },
+        ],
+    },
+    options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: true,
+      },
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            var label = context.dataset.label || "";
+            if (label) {
+              label += ": ";
+            }
+            if (context.parsed.y !== null) {
+              label += context.parsed.y + " MicroDollars";
+            }
+            return label;
+          },
+        },
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: "Cost in Dollars ($)",
+          font: {
+            weight: "bold",
+          },
+        },
+      },
+      x: {
+        title: {
+          display: true,
+          text: "Date",
+          font: {
+            weight: "bold",
+          },
+        },
+      },
+    },
+    interaction: {
+      intersect: false,
+      mode: "index",
+    },
+  },
+});
+</script>
+
+<script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+        var options = {
+            damping: '0.5'
+        }
+        Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+    function openPopup() {
+        window.open("https://example.com", "Popup", "width=400,height=400");
+    }
+</script>
+
+<script>
+    new MultiSelectTag('services', {
+        rounded: true,    // default true
+        shadow: true      // default false
+    })
+
+</script>

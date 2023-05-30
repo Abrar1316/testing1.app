@@ -1,0 +1,73 @@
+<div class="container mt-5">
+  <h3 class="text-center mb-3">
+    <span class="text-primary">Add</span> New Project
+  </h3>
+  <div class="row justify-content-md-center">
+    <div class="col-md-9">
+      {{if .Error}}
+      <div class="alert alert-danger" role="alert" style="color: black">
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+        {{.Error}}
+      </div>
+      {{end}}
+    </div>
+  </div>
+  <div class="row justify-content-md-center">
+    <div class="card p-5 col-md-9">
+      <form method="post">
+        <div class="form-group">
+          <label for="projectname">Project Name</label>
+
+          <input
+            type="text"
+            class="form-control"
+            id="projectname"
+            name="projectname"
+            placeholder="Enter project name"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="projectdesc">Project Description</label>
+
+          <textarea
+            class="form-control"
+            id="projectdesc"
+            name="projectdesc"
+            placeholder="Enter project description"
+            rows="3"
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-group mt-5">
+          <div class="col-sm-offset-2 text-end">
+            <a href="#" onclick="history.back()">
+              <button
+                type="button"
+                class="btn btn-lg btn-default mx-2"
+                style="font-size: 12px"
+              >
+                Cancel
+              </button>
+            </a>
+            <button
+              type="submit"
+              class="btn btn-lg btn-primary"
+              style="font-size: 12px"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  {{template "footer.html" .}}
+</div>

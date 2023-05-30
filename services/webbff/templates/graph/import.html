@@ -1,0 +1,267 @@
+<script
+  src="https://kit.fontawesome.com/42d5adcbca.js"
+  crossorigin="anonymous"
+></script>
+<link id="pagestyle" href="/public/css/bill-app.css?v=1.0.7" rel="stylesheet" />
+<link rel="stylesheet" href="/public/css/pgraph.css" />
+<link rel="icon" type="image/png" href="/public/img/logo.png" />
+<script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag/dist/js/multi-select-tag.js"></script>
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag/dist/css/multi-select-tag.css"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+/>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+<script src="/public/js/bill-app.min.js?v=1.0.7"></script>
+
+<script src="/public/js/core/popper.min.js"></script>
+<script src="/public/js/core/bootstrap.min.js"></script>
+<script src="/public/js/plugins/perfect-scrollbar.min.js"></script>
+<script src="/public/js/plugins/smooth-scrollbar.min.js"></script>
+<script
+  src="https://kit.fontawesome.com/4fdc0a76ce.js"
+  crossorigin="anonymous"
+></script>
+<!-- for settings icon-->
+
+<link
+  rel="canonical"
+  href="https://getbootstrap.com/docs/5.3/examples/dashboard/"
+/>
+
+<link href="/public/css/dist/bootstrap.min.css" rel="stylesheet" />
+
+<style>
+  .bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+
+  @media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+      font-size: 3.5rem;
+    }
+  }
+
+  .b-example-divider {
+    height: 3rem;
+    background-color: rgba(0, 0, 0, 0.1);
+    border: solid rgba(0, 0, 0, 0.15);
+    border-width: 1px 0;
+    box-shadow: inset 0 0.5em 1.5em rgba(0, 0, 0, 0.1),
+      inset 0 0.125em 0.5em rgba(0, 0, 0, 0.15);
+  }
+
+  .b-example-vr {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 100vh;
+  }
+
+  .bi {
+    vertical-align: -0.125em;
+    fill: currentColor;
+  }
+
+  .nav-scroller {
+    position: relative;
+    z-index: 2;
+    height: 2.75rem;
+    overflow-y: hidden;
+  }
+
+  .nav-scroller .nav {
+    display: flex;
+    flex-wrap: nowrap;
+    padding-bottom: 1rem;
+    margin-top: -1px;
+    overflow-x: auto;
+    text-align: center;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+</style>
+
+<style>
+  .btn btn-sm btn-outline-secondary {
+    background-color: #4caf50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .dropdown {
+    position: relative;
+    display: inline-block;
+    z-index: 2;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    z-index: 2;
+  }
+
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+</style>
+<style>
+  .dropdown-item.active {
+    background-color: #0c1a6c;
+    color: #fff;
+  }
+</style>
+
+<style>
+  /* sign out pop-up style */
+  .confirm-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    text-align: center;
+  }
+
+  .confirm-box p {
+    margin: 0 0 20px 0;
+  }
+
+  .confirm-btn,
+  .cancel-btn {
+    padding: 5px 10px;
+    margin: 0 10px;
+    background-color: #077927;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .cancel-btn {
+    background-color: #f44336;
+  }
+</style>
+
+<style>
+  .dropbtn {
+    border: none;
+  }
+
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-content {
+    margin-top: -13px;
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 92px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+
+  .dropdown-content a {
+    color: black;
+    padding: 0px 6px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #ddd;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+</style>
+
+<!-- for doller text side in graph  -->
+<style>
+  .inner {
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    /* font-weight: bold; */
+  }
+
+  .rotate {
+    transform: translateX(-50%) translateY(-50%) rotate(-90deg);
+  }
+  #chart-line {
+    background-color: rgba(128, 128, 128, 0.076);
+    border-radius: 15px;
+  }
+  #chart-bars {
+    border-radius: 15px;
+  }
+</style>
+
+<script>
+  function updateGraphPinned(userId, projectId, value) {
+    fetch(`/${userId}/projects/${projectId}/graphpinned/${value}/`, {
+      method: "GET",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to update pinning project");
+        }
+        window.location.href = window.location.href;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+</script>
+
+<script>
+  var mongModal = document.getElementById("mongoModal");
+
+function openMongoModal() {
+  document.getElementById("mongoModal").style.display = "block";
+}
+function closeMongoModal() {
+  document.getElementById("mongoModal").style.display = "none";
+}
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    closeMongoModal();
+  }
+}
+</script>
+
+<link rel="stylesheet" href="/public/css/dashboard.css" />
+<link rel="icon" type="image/png" href="/public/img/logo.png" />
+<script src="/public/js/pop-up.js" defer></script>
+<link rel="stylesheet" href="/public/css/pop-up.css" />

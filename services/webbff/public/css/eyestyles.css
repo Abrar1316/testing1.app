@@ -1,0 +1,26 @@
+#show-password-btn {
+    position: absolute;
+    right: 28px;
+    top: 35px;
+    bottom: 0;
+    margin: auto;
+    background: none;
+    border: none;
+    outline: none;
+    padding: 0;
+  }
+  #eyeIcon {
+    opacity: 0.5;
+  }
+
+  #show-password-btn-signin {
+    position: absolute;
+    right: 28px;
+    top: 50px;
+    bottom: 0;
+    margin: auto;
+    background: none;
+    border: none;
+    outline: none;
+    padding: 0;
+  }

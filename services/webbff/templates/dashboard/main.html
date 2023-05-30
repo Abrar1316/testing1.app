@@ -1,0 +1,216 @@
+<div class="container-fluid">
+  <div class="row px-5">
+    <nav
+      id="sidebarMenu"
+      class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse"
+    >
+      <div class="position-sticky pt-3 sidebar-sticky">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              href="/{{.UserId}}/days/30"
+              aria-current="page"
+            >
+              <div data-feather="home" class="align-text-bottom"></div>
+              <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/{{.UserId}}/projects">
+              <i class="fas fa-tasks"></i>
+              Projects
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="/logout/"
+              onclick="return confirmSignOut(event)"
+            >
+              <i class="fas fa-sign-out-alt"></i>
+              Sign out
+            </a>
+          </li>
+        </ul>
+      </div>
+      <script>
+        function confirmSignOut(event) {
+          event.preventDefault(); // Prevents the default link behavior
+
+          var confirmBox = document.createElement("div");
+          confirmBox.classList.add("confirm-box");
+          confirmBox.innerHTML = `<p><b>Are you sure you want to sign out?</b></p>
+                                    <button class="confirm-btn">Confirm</button>
+                                    <button class="cancel-btn">Cancel</button>`;
+          document.body.appendChild(confirmBox);
+
+          return new Promise((resolve) => {
+            document
+              .querySelector(".confirm-btn")
+              .addEventListener("click", () => {
+                document.body.removeChild(confirmBox);
+                resolve(true);
+                window.location.href = "/logout/";
+              });
+
+            document
+              .querySelector(".cancel-btn")
+              .addEventListener("click", () => {
+                document.body.removeChild(confirmBox);
+                resolve(false);
+              });
+          });
+        }
+      </script>
+    </nav>
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+      >
+        <h1 class="h2">Dashboard</h1>
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-lg-12">
+          <div class="card h-100">
+            <div
+              class="card-header d-flex justify-content-end align-items-center"
+            >
+              <div class="d-flex align-content-center">
+                {{$value :=.Check}}
+                <div class="dropdown">
+                  <span style="margin-right: -8px; border-bottom: 3px dotted gray;"><i class="fas fa-clock mr-2" style="color: blue;"></i></span> 
+                  <a
+                    class="dropdown-toggle"
+                    href="#"
+                    role="button"
+                    id="dropdownMenuLink"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    style="color: blue;border-bottom: 3px dotted gray;"
+                    
+                    > Last 30 days</a
+                  >
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a
+                      class="dropdown-item active"
+                      href="/{{.UserId}}/days/30"
+                      data-value="30"
+                      ><i class="fas fa-clock mr-2"></i>Last 30 days</a
+                    >
+                    <a
+                      class="dropdown-item"
+                      href="/{{.UserId}}/days/7"
+                      data-value="7"
+                      ><i class="fas fa-clock mr-2"></i>Last 7 days</a
+                    >
+                    <a
+                      class="dropdown-item"
+                      href="/{{.UserId}}/days/365"
+                      data-value="365"
+                      ><i class="fas fa-clock mr-2"></i>Last 1 Year</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-body p-3">
+              <div class="chart">
+                <div id="graphValues" style="display: none">
+                  {{range $key, $value := .TotalCostOfRequestedProjects}}
+                  <h6 class="keys" keys="{{$key}}">{{$key}}</h6>
+                  <ul class="values">
+                    {{range $value}}
+                    <li
+                      class="value"
+                      data-time="{{.Time}}"
+                      data-cost="{{.Cost}}"
+                    >
+                      {{.Time}}{{.Cost}}
+                    </li>
+                    {{end}}
+                  </ul>
+                  {{end}}
+                </div>
+                <canvas
+                  id="chart-line"
+                  class="chart-canvas"
+                  height="300"
+                ></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="col-lg-12">
+          <div class="card h-100">
+            <div class="card-body p-3">
+              <div class="bg-gradient-dark border-radius-lg py-3 pe-1">
+                <div class="chart">
+                  <div id="graphValues1" style="display: none">
+                    {{range .TotalCostOfProjectList}}
+                    {{.ProjectName}}cost{{.AccruedCostMicrodollar}} {{end}}
+                  </div>
+                  <canvas
+                    id="chart-bars-projects"
+                    class="chart-canvas"
+                    height="260"
+                    style="width: 100%"
+                  ></canvas>
+                </div>
+              </div>
+              <h6 class="ms-2 mt-4 mb-0">Total Project Cost in Last 30 days</h6>
+              <div class="container border-radius-lg"></div>
+            </div>
+          </div>
+        </div> -->
+      </div>
+
+      <!-- <h2>Section title</h2> -->
+      <div class="container-fluid pt-5 mb-5">
+        <h5 class="font-weight-bolder">Pinned Projects</h5>
+        <div class="row">
+          {{ range .PinnedProjectResponse}}
+          <div class="card" style="margin-bottom: 20px">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="font-weight-bolder mb-0">
+                      <a
+                        class="nav-link"
+                        href="/{{$.UserId}}/projects/{{.ID}}/30"
+                        >{{.Name}}</a
+                      >
+                    </p>
+                    <h5 class="text-sm mb-0 text-capitalize font-weight-bold">
+                      {{.Description}}
+                    </h5>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div
+                    class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md"
+                  >
+                    <button
+                      class="dropdown-item border-radius-md"
+                      onclick="updatePinProject('{{$.UserId}}', '{{.Name}}', '{{.IsPinned}}')"
+                    >
+                      <i class="fas fa-thumbtack" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {{end}}
+        </div>
+      </div>
+    </main>
+    {{template "footer.html" .}}
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" style="font-size:10%; color: beige;"><img
+            src="/public/img/logo.png"
+            style="height: 20px; background-color: aliceblue; border-radius: 10px; margin-right:5px;">Think Future
+        Technologies</a>
+
+    <form class="form-control form-control-dark w-100 rounded-0 border-0 d-flex align-items-center "
+        action="/{{.UserId}}/projects/" method="get" style="color:black;background-color: black;">
+        <input type="text" name="projects" placeholder="Search....">
+        <div class="navbar-nav">
+            <div class="nav-item text-nowrap">
+                <button type="submit" class="nav-link px-3"
+                    style="background-color: transparent; border: none; color: aqua;">Search</button>
+            </div>
+        </div>
+    </form>
+
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+        data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation"
+        style="color:white">
+        <span class="navbar-toggler-icon"><i class="fas fa-bars"></i></span>
+
+    </button>
+    <div class="navbar-nav">
+        <div class="nav-item text-nowrap">
+
+        </div>
+    </div>
+</header>

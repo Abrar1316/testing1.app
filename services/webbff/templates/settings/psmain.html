@@ -1,0 +1,223 @@
+<form id="project-form" method="POST">
+  <div class="container light-style flex-grow-1 container-p-y">
+    <h4 class="font-weight-bold py-3 mb-4">Project Settings</h4>
+    <div class="card overflow-hidden">
+      <div class="row no-gutters row-bordered row-border-light">
+        <div class="col-md-3 pt-0">
+          <div class="list-group list-group-flush account-settings-links">
+            <a
+              class="list-group-item list-group-item-action"
+              data-toggle="list"
+              data-target="#general"
+            >
+              <i class="fas fa-cog mr-2"></i>General
+            </a>
+            <a
+              class="list-group-item list-group-item-action"
+              data-toggle="list"
+              data-target="#connect"
+            >
+              <i class="fas fa-cloud mr-2"></i>Connections
+            </a>
+            <a
+              class="list-group-item list-group-item-action"
+              data-toggle="list"
+              data-target="#danger-zone"
+            >
+              <i class="fas fa-trash mr-2"></i>Danger Zone
+            </a>
+          </div>
+        </div>
+
+        <div class="col-md-9">
+          <div class="tab-content">
+            <div class="tab-pane fade show m-5" id="general">
+              <label class="form-label">Project Name</label>
+              <div class="form-group">
+                <input
+                  id="projectname"
+                  name="projectname"
+                  type="text"
+                  class="form-control mb-1"
+                  value="{{.ProjectDetails.Name}}"
+                  required
+                />
+              </div>
+              <label class="form-label mt-2">Project Description</label>
+              <div class="form-group">
+                <textarea
+                  id="projectdesc"
+                  name="projectdesc"
+                  class="form-control mb-1"
+                  required
+                ></textarea>
+              </div>
+            </div>
+
+            <!-- Credentials connection  -->
+            <div class="tab-pane fade connections m-5" id="connect">
+              <div class="row mt-4">
+                <!-- AWS Credentials OPEN -->
+                <div class="col-sm-3 p-2">
+                  <i class="fab fa-aws" style="font-size: 48px"></i>
+                  <h6 class="card-title">Connect with AWS</h6>
+                  <div class="Credentials-details">
+                    {{ if .AwsKeys }}
+                    <button
+                      id="disconnect-btn"
+                      class="btn btn-danger text-center"
+                      onclick="deleteAwsCredentials('{{.ProjectDetails.UserId}}', '{{.Id}}')"
+                    >
+                      Disconnect
+                    </button>
+                    <div
+                      class="text-success text-center"
+                      style="font-size: 15px; font-weight: 600"
+                    >
+                      successfully connected!
+                    </div>
+                    {{ else }}
+                    <button
+                      id="connect-btn"
+                      class="btn btn-success"
+                      onclick="psOpenModel()"
+                    >
+                      Connect
+                    </button>
+                    {{ end }}
+                  </div>
+                  {{if .ErrorMessage}}
+                  <div class="text-center text-danger">Invalid Credentials</div>
+                  {{end}}
+                </div>
+                <!-- AWS End -->
+              </div>
+
+              <!-- open model -->
+              <div id="psmyModel" class="modal">
+                <div class="modal-content text-center">
+                  <div class="popup-top">
+                    <h2 class="close" onclick="psCloseModel()">&times;</h2>
+                    <h5>Credentials</h5>
+                  </div>
+                  <!-- fieldset is for seprating form -->
+                  <fieldset>
+                    <form id="aws-credentials-form">
+                      <div class="mb-3">
+                        <input
+                          id="awsaccesskey"
+                          type="text"
+                          name="awsaccesskey"
+                          class="form-control"
+                          placeholder="AWS Access Key"
+                          aria-label="Name"
+                          aria-describedby="text-addon"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <input
+                          id="awssecretkey"
+                          type="text"
+                          name="awssecretkey"
+                          class="form-control"
+                          placeholder="AWS Secret Key"
+                          aria-label="Name"
+                          aria-describedby="text-addon"
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        name="action"
+                        value="submit"
+                        class="btn btn btn-primary"
+                      >
+                        submit
+                      </button>
+                    </form>
+                  </fieldset>
+                </div>
+              </div>
+              <!-- end model  -->
+            </div>
+            <!-- end -->
+
+            <!-- delete the project  -->
+            <div class="tab-pane fade m-5 text-center" id="danger-zone">
+              <!-- <hr class="border-light m-0" /> -->
+              <div class="card-body">
+                <label class="text-danger" style="font-size: larger"
+                  >{{.ProjectDetails.Name}}</label
+                >
+                <hr class="border-light mt-1" />
+                <button
+                  id="deleteProject-btn"
+                  type="button"
+                  class="btn btn-outline-danger"
+                  onclick="deleteProject('{{.ProjectDetails.UserId}}', '{{.Id}}')"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+            <!-- end -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-right mt-3">
+      <button
+        type="submit"
+        name="action"
+        value="save_changes"
+        class="btn btn-primary"
+        id="saveButton"
+        disabled
+      >
+        Save changes</button
+      >&nbsp;
+      <button type="button" class="btn btn-default" onclick="history.back()">
+        Cancel
+      </button>
+      <!-- <a href="/${userId}/projects/${projectId}/30" class="btn btn-default">Cancel</a> -->
+    </div>
+  </div>
+</form>
+
+<script>
+  $(document).ready(function () {
+    // get the ID of the active tab from localStorage (if it exists)
+    var activeTabId = localStorage.getItem("activeTabId");
+
+    // if there is an active tab ID, show the corresponding tab
+    if (activeTabId) {
+      $(".list-group-item[data-target='#" + activeTabId + "']").addClass(
+        "active"
+      );
+      $(".tab-pane[id='" + activeTabId + "']").addClass("show active");
+    }
+
+    // add an event listener to the list group links
+    $(".list-group-item").on("click", function () {
+      // get the ID of the clicked tab
+      var tabId = $(this).attr("data-target").substring(1);
+
+      // save the ID of the clicked tab to localStorage
+      localStorage.setItem("activeTabId", tabId);
+    });
+  });
+</script>
+
+<script>
+  window.onload = function () {
+    // Get the textarea element
+    var textarea = document.getElementById("projectdesc");
+    // Set the value of the textarea to the project description
+    textarea.value = "{{.ProjectDetails.Description}}";
+  };
+</script>
+
+<script>
+  $(document).on("change", ":input", function () {
+    $("#saveButton").prop("disabled", false);
+  });
+</script>

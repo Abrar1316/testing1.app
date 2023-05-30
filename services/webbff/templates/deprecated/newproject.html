@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="icon" type="image/png" href="/public/img/logo.png">
+  <title>
+    Billing App - Add New Project  
+  </title>
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+  <!-- Nucleo Icons -->
+  <link href="/public/css/nucleo-icons.css" rel="stylesheet" />
+  <link href="/public/css/nucleo-svg.css" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+  <link href="/public/css/nucleo-svg.css" rel="stylesheet" />
+  <!-- CSS Files -->
+  <link id="pagestyle" href="/public/css/bill-app.css?v=1.0.7" rel="stylesheet" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script src="/public/js/helper.js" defer></script>
+</head>
+
+<body class="">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg position-absolute top-0 z-index-3 w-100 shadow-none my-3 navbar-transparent mt-4">
+    <div class="container">
+      <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 text-white" href="https://www.tftus.com/">
+        Think Future Technologies Pvt. Ltd.
+      </a>
+      <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon mt-2">
+          <span class="navbar-toggler-bar bar1"></span>
+          <span class="navbar-toggler-bar bar2"></span>
+          <span class="navbar-toggler-bar bar3"></span>
+        </span>
+      </button>
+      <div class="collapse navbar-collapse" id="navigation">
+        <ul class="navbar-nav mx-auto ms-xl-auto me-xl-7">
+          <li class="nav-item">
+            <a class="nav-link me-2" href="/{{.UserId}}/projects/">
+              <i class="fa-duotone fa-rectangle-history-circle-user"></i>
+              Project DashBoard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link me-2" href="/login/">
+              <i class="fas fa-user-circle opacity-6  me-1"></i>
+              Sign Out
+            </a>
+          </li>
+        </ul>
+        <ul class="navbar-nav d-lg-block d-none">
+          <li class="nav-item">
+            <a href="/" class="btn btn-sm btn-round mb-0 me-1 bg-gradient-light">Home</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- End Navbar -->
+  <main class="main-content  mt-0">
+    <section class="min-vh-100 mb-8">
+      <div class="page-header align-items-start min-vh-50 pt-5 pb-11 m-3 border-radius-lg"
+        style="background-image: url('/public/img/curved-images/curved14.jpg');">
+        <span class="mask bg-gradient-dark opacity-6"></span>
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-5 text-center mx-auto">
+              <h1 class="text-white mb-2 mt-5">Welcome!</h1>
+              <p class="text-lead text-white">Add new project to your project directory.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row mt-lg-n10 mt-md-n11 mt-n10">
+          <div class="col-xl-4 col-lg-5 col-md-7 mx-auto">
+            <div class="card z-index-0">
+              <div class="card-header text-center pt-4">
+                <h5>Add Project</h5>
+              </div>
+      
+              <div class="card-body">
+          
+                <form role="form text-left" action="/{{.UserId}}/projects/new/" method="post" id="projectsform">
+                  <div class="mb-3">
+                    <input id="projectname" type="text" name="projectname" class="form-control" placeholder="Project Name"
+                      aria-label="Name" aria-describedby="text-addon" required>
+                  </div>
+                  <div class="mb-3">
+                    <input id="projectdesc" type="text" name="projectdesc" class="form-control" placeholder="Project Description"
+                      aria-label="Name" aria-describedby="text-addon" required>
+                  </div>
+                  <div class="mb-3">
+                    <input id="awsaccesskey" type="text" name="awsaccesskey" class="form-control" placeholder="AWS Access Key"
+                      aria-label="Name" aria-describedby="text-addon" required>
+                  </div>
+                  <div class="mb-3">
+                    <input id="awssecretkey" type="text" name="awssecretkey" class="form-control" placeholder="AWS Secret Key"
+                      aria-label="Name" aria-describedby="text-addon" required>
+                  </div>
+                  
+                  <div class="text-center">
+                    <button type="submit" class="btn bg-gradient-dark w-100 my-2 mb-2">Add</button>
+                  </div>
+                  <p class="text-sm mt-3 mb-0">Check Your Projects : <a href="/{{.UserId}}/projects"
+                      class="text-dark font-weight-bolder">Project DashBoard</a></p>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+    <footer class="footer py-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mb-4 mx-auto text-center">
+            <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+              Company
+            </a>
+            <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+              About Us
+            </a>
+            <a href="javascript:;" target="_blank" class="text-secondary me-xl-5 me-3 mb-sm-0 mb-2">
+              Contact Us
+            </a>
+          </div>
+          <div class="col-lg-8 mx-auto text-center mb-4 mt-2">
+            <a href="https://twitter.com/ThinkFutureTech?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor"
+              target="_blank" class="text-secondary me-xl-4 me-4">
+              <div class="text-lg fab fa-twitter"></div>
+            </a>
+            <a href="https://www.instagram.com/tft_us/?hl=en" target="_blank" class="text-secondary me-xl-4 me-4">
+              <div class="text-lg fab fa-instagram"></div>
+            </a>
+            <a href="https://in.linkedin.com/company/think-future-technologies" target="_blank"
+              class="text-secondary me-xl-4 me-4">
+              <div class="text-lg fab fa-linkedin"></div>
+            </a>
+            <a href="https://www.tftus.com/" target="_blank" class="text-secondary me-xl-4 me-4">
+              <div class="text-lg fa fa-home"></div>
+            </a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8 mx-auto text-center mt-1">
+            <p class="mb-0 text-secondary">
+              Copyright ©
+              <script>
+                document.write(new Date().getFullYear())
+              </script> Think Future Technologies Pvt. Ltd..
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <script src="/public/js/core/popper.min.js"></script>
+  <script src="/public/js/core/bootstrap.min.js"></script>
+  <script src="/public/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="/public/js/plugins/smooth-scrollbar.min.js"></script>
+  <script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+      var options = {
+        damping: '0.5'
+      }
+      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+  </script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <script src="/public/js/bill-app.min.js?v=1.0.7"></script>
+ 
+</body>
+
+</html>

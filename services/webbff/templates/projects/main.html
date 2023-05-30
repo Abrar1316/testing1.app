@@ -1,0 +1,261 @@
+<div class="container-fluid">
+    <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="position-sticky pt-3 sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/{{.UserId}}/days/30" aria-current="page">
+                            <div data-feather="home" class="align-text-bottom"></div>
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/{{.UserId}}/projects">
+                            <i class="fas fa-tasks"></i>
+                            Projects
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout/" onclick="return confirmSignOut(event)">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Sign out
+                        </a>
+                    </li>
+                </ul>
+
+
+            </div>
+            <script>
+                function confirmSignOut(event) {
+                    event.preventDefault(); // Prevents the default link behavior
+
+                    var confirmBox = document.createElement("div");
+                    confirmBox.classList.add("confirm-box");
+                    confirmBox.innerHTML = `<p><b>Are you sure you want to sign out?</b></p>
+                                            <button class="confirm-btn">Confirm</button>
+                                            <button class="cancel-btn">Cancel</button>`;
+                    document.body.appendChild(confirmBox);
+
+                    return new Promise(resolve => {
+                        document.querySelector(".confirm-btn").addEventListener("click", () => {
+                            document.body.removeChild(confirmBox);
+                            resolve(true);
+                            window.location.href = "/logout/";
+                        });
+
+                        document.querySelector(".cancel-btn").addEventListener("click", () => {
+                            document.body.removeChild(confirmBox);
+                            resolve(false);
+                        });
+                    });
+                }
+            </script>
+
+        </nav>
+
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div
+                class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">My Projects</h1>
+                <div class="add-project-btn">
+                    <a href="/{{.UserId}}/projects/new/">
+                    <button type="button" class="btn btn-outline-secondary">
+                        <i class="fa fa-plus-circle" style="font-size: 24px; padding: 0px 5px;"></i>
+                        Add Project</button>
+                    </a>
+                </div>
+                
+                
+        </div>
+                <!-- End Navbar -->
+
+                <!-- Add New Project This form will displayed after Click-->
+                <!-- <div id="myModal" class="modal">
+                    <div class="modal-content">
+                        <div class="popup-top">
+                            <h2 class="close" onclick="closeModal()">&times;</h2>
+                            <h5>Add Your Project</h5>
+                        </div>
+                        <form role="form text-left" action="/{{.UserId}}/projects/new/" method="post" id="projectsform">
+
+                            <div class="mb-3">
+                                <input id="projectname" type="text" name="projectname" class="form-control"
+                                    placeholder="Project Name" aria-label="Name" aria-describedby="text-addon" required>
+                            </div>
+                            <div class="mb-3">
+                                <input id="projectdesc" type="text" name="projectdesc" class="form-control"
+                                    placeholder="Project Description" aria-label="Name" aria-describedby="text-addon"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <input id="awsaccesskey" type="text" name="awsaccesskey" class="form-control"
+                                    placeholder="AWS Access Key" aria-label="Name" aria-describedby="text-addon"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <input id="awssecretkey" type="text" name="awssecretkey" class="form-control"
+                                    placeholder="AWS Secret Key" aria-label="Name" aria-describedby="text-addon"
+                                    required>
+                            </div>
+                            <div id="UserId" style="display: none;">
+                                <input type="text" name="UserId" class="form-control" value="{{.UserId}}"
+                                    placeholder="AWS Secret Key" aria-label="Name" aria-describedby="text-addon"
+                                    required>
+                            </div>
+
+                            <button type="submit" class="btn bg-gradient-dark w-100 my-2 mb-2">Add</button>
+                        </form>
+                    </div>
+                </div>
+            </div> -->
+
+            <div class="container-fluid py-4 padding-top: 40px;">
+
+                <!-- <h5 class="font-weight-bolder">Projects</h5> -->
+                <div class="row">
+                    {{ range .Projects}}
+                    <div class="card" style="margin-bottom: 20px;">
+                        <div class="card-body p-3">
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="numbers">
+                                        <p class="font-weight-bolder mb-0"><a class="nav-link"
+                                                href="/{{$.UserId}}/projects/{{.Id}}/30">{{.Name}} (Started On :
+                                                {{.StartedOn}})</a></p>
+                                        <div>
+                                            <h5 class="text-sm mb-0 text-capitalize font-weight-bold"
+                                                style="display: inline-block;">{{.Description}}</h5>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-4 text-end">
+                                    <h5 id="status-{{.Id}}" class="text-sm mb-0 text-capitalize font-weight-bold"
+                                        style="display: inline-block;">{{.IsActive}}</h5>
+                                    <script>
+                                        var isActive = "{{.IsActive}}" === "Active";;
+                                        var statusElement = document.getElementById("status-{{.Id}}");
+
+                                        if (isActive) {
+                                            statusElement.style.color = "green";
+                                        } else {
+                                            statusElement.style.color = "red";
+                                        }
+                                    </script>
+
+
+                                    <a class="cursor-pointer" id="dropdownTable" data-bs-toggle="dropdown"
+                                        aria-expanded="false" style="padding: 20px;"><i
+                                            class="fas fa-ellipsis-v"></i></a>
+                                    <ul class="dropdown-menu px-2 py-3 ms-sm-n4 ms-n5" aria-labelledby="dropdownTable">
+                                        <li>
+                                            <button class="btn bg-gradient-light w-100" id="pin-button-{{.Id}}"
+                                                onclick="updatePinProject('{{$.UserId}}', '{{.Id}}', '{{.IsPinned}}')"
+                                                style="position: relative;">
+
+
+                                                {{if eq .IsPinned "Pinned"}}
+                                                <i class="fas fa-thumbtack"
+                                                    style="margin-left: 2px;margin-right: 2px;"></i>
+                                                {{else}}
+                                                <i class="fas fa-thumbtack" style="position: relative;">
+                                                    <span
+                                                        style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(45deg); width: 70%; height: 2px; background-color: #fff;"></span>
+                                                </i>
+
+                                                {{end}}
+
+                                                <div class="pin-value" id="pin-value-{{.Id}}"
+                                                    style="position: absolute; top: 100%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s ease-in-out;">
+                                                    {{.IsPinned}}
+                                                </div>
+                                            </button>
+
+                                        </li>
+                                        <li>
+                                            <button class="btn bg-gradient-light w-100"
+                                                onclick="openUpdateModal('{{.Id}}','{{$.UserId}}')">
+                                                <i class="fas fa-edit text-secondary"></i>
+                                            </button>
+                                        </li>
+                                        <button class="btn bg-gradient-light w-100" id="active-button-{{.Id}}"
+                                            onclick="updateActiveProject('{{$.UserId}}', '{{.Id}}', '{{.IsActive}}')"
+                                            style="position: relative;">
+
+
+                                            {{if eq .IsActive "Active"}}
+                                            <i class="fas fa-check" style="margin-left: 2px;margin-right: 2px; color: rgb(69, 210, 90);"></i>
+                                            {{else}}
+                                            <i class="fas fa-times" style="position: relative; color: rgb(255, 41, 41);"></i>
+
+                                            {{end}}
+
+                                            <div class="pin-value" id="pin-value-{{.Id}}"
+                                                style="position: absolute; top: 100%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s ease-in-out;">
+                                                {{.IsActive}}
+                                            </div>
+                                        </button>
+
+                                        </li>
+
+
+                                    </ul>
+                                    <div id="updateModal{{.Id}}" class="modal-update">
+                                        <div class="modal-content-update">
+                                            <div class="popup-top">
+                                                <h2 class="closeUpdate" onclick="closeUpdateModal('{{.Id}}')">&times;
+                                                </h2>
+                                                <h5 style="margin-right: 400px;" class="text mb-0 font-weight-bold">
+                                                    Update Project</h5>
+                                            </div>
+                                            <form role="form text-left" id="updateprojectsform{{.Id}}">
+                                                <div class="mb-3">
+                                                    <input id="projectname" type="text" name="projectname"
+                                                        class="form-control" placeholder="{{.Name}}" aria-label="Name"
+                                                        aria-describedby="text-addon">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <input id="projectdesc" type="text" name="projectdesc"
+                                                        class="form-control" placeholder="{{.Description}}"
+                                                        aria-label="Name" aria-describedby="text-addon">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <input id="awsaccesskey" type="text" name="awsaccesskey"
+                                                        class="form-control" placeholder="AWS Access Key"
+                                                        aria-label="Name" aria-describedby="text-addon">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <input id="awssecretkey" type="text" name="awssecretkey"
+                                                        class="form-control" placeholder="AWS Secret Key"
+                                                        aria-label="Name" aria-describedby="text-addon">
+                                                </div>
+
+                                                <div class="text-center">
+                                                    <button type="submit"
+                                                        class="btn bg-gradient-dark w-100 my-2 mb-2">Update</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                    {{end}}
+                </div>
+            </div>
+            {{template "footer.html" .}}
+        </main>
+        <script>
+            new MultiSelectTag('projects', {
+                rounded: true,    // default true
+                shadow: true      // default false
+            })
+
+        </script>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+function togglePasswordVisibility() {
+   
+    const passwordInput = document.getElementById("userpass");
+    const togglePasswordButton = document.getElementById("show-password-btn");
+    const eyeIcon = document.getElementById("eyeIcon");
+  
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      eyeIcon.classList.remove("fa-eye");
+      eyeIcon.classList.add("fa-eye-slash");
+    } else {
+      passwordInput.type = "password";
+      eyeIcon.classList.remove("fa-eye-slash");
+      eyeIcon.classList.add("fa-eye");
+    }
+  }

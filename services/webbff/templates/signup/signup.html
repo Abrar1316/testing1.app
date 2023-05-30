@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{{template "head.html" .}}
+
+<body class="">
+  {{template "navbar.html" .}}
+
+  {{template "main.html" .}}
+
+  {{template "footer.html" .}}
+
+  {{template "script.html" .}}
+  
+  {{if .Error}}
+  <div class="error-box">
+      <p><b style="text-align: center;">{{.Error}}</b></p>
+      <button class="dismiss-btn">Dismiss</button>
+  </div>
+
+  <script>
+  function showError() {
+      var errorBox = document.querySelector(".error-box");
+      errorBox.style.display = "block";
+
+      return new Promise(resolve => {
+          document.querySelector(".dismiss-btn").addEventListener("click", () => {
+              errorBox.style.display = "none";
+              resolve();
+          });
+      });
+  }
+
+  showError().then(() => {
+      // Once user dismisses the error message, perform any required action
+      console.log("Error message dismissed");
+  });
+  </script>
+
+  <style>
+  .error-box {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 450px;
+      height: 150px;
+      padding: 20px;
+      background-color: white;
+      border: 1px solid #ddd;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      z-index: 9999;
+      text-align: center;
+      display: none;
+  }
+
+  .error-box p {
+      margin: 0 0 20px 0;
+  }
+
+  .dismiss-btn {
+      padding: 5px 10px;
+      margin: 0 10px;
+      background-color: #ce2f2f;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+  }
+  </style>
+{{end}}
+
+ 
+</body>
+</html>

@@ -1,0 +1,5 @@
+[pg]
+host     = 127.0.0.1:5432
+username = dev
+password = 12345
+database = billapp-dev
